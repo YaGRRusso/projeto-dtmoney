@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
 import { createServer } from 'miragejs'
+import { App } from './App';
 
 createServer({
   routes() {
@@ -11,7 +11,7 @@ createServer({
       return [
         {
           id: 1,
-          title: 'transacao',
+          title: 'Transacao',
           amount: 400,
           type: 'deposit',
           category: 'Food',
