@@ -1,10 +1,49 @@
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import totalImg from '../../assets/total.svg'
+import { useTransactions } from '../../hooks/useTransactions';
 
 import { Container } from "./styles";
 
 export function Summary(){
+  const {transactions} = useTransactions()
+
+  // const totalDeposits = transactions.reduce((acc, transaction) => {
+  //   if (transaction.type === 'deposit') {
+  //     return acc + transaction.amount
+  //   }
+
+  //   return acc
+  // }, 0)
+
+  // const totalWithdraw = transactions.reduce((acc, transaction) => {
+  //   if (transaction.type === 'withdraw') {
+  //     return acc + transaction.amount
+  //   }
+
+  //   return acc
+  // }, 0)
+
+  // const total = totalDeposits - totalWithdraw
+
+  const summary = transactions.reduce((acc, transaction) => {
+    if (transaction.type === 'deposit') {
+      acc.deposits += transaction.amount;
+      acc.total += transaction.amount
+    } else {
+      acc.withdraws += transaction.amount;
+      acc.total -= transaction.amount
+    }
+
+    return acc
+  }, {
+    deposits: 0,
+    withdraws: 0,
+    total: 0
+  })
+
+  console.log(transactions)
+
   return (
     <Container>
 
@@ -13,7 +52,7 @@ export function Summary(){
           <p>Entradas</p>
           <img src={incomeImg} alt="Entrada" />
         </header>
-        <strong>R$ 1000,00</strong>
+        <strong>{summary.deposits}</strong>
       </div>
 
       <div>
@@ -21,7 +60,7 @@ export function Summary(){
           <p>Saidas</p>
           <img src={outcomeImg} alt="Entrada" />
         </header>
-        <strong>R$ 500,00</strong>
+        <strong>-{summary.withdraws}</strong>
       </div>
 
       <div className='highlight'>
@@ -29,7 +68,7 @@ export function Summary(){
           <p>Total</p>
           <img src={totalImg} alt="Entrada" />
         </header>
-        <strong>R$ 500,00</strong>
+        <strong>{summary.total}</strong>
       </div>
 
     </Container>
